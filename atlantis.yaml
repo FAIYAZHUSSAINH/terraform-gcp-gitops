@@ -1,0 +1,18 @@
+
+version: 3
+
+projects:
+  - name: vpc
+    dir: backend/vpc
+    autoplan:
+      enabled: false
+
+  - name: vm
+    dir: backend/vm
+    autoplan:
+      enabled: false
+
+  - name: storage
+    dir: backend/storage
+    autoplan:
+      enabled: false
