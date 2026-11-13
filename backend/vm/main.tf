@@ -9,8 +9,8 @@ data "terraform_remote_state" "vpc" {
 }
 
 module "vm" {
-  source = "../../modules/vm"
 
+  source = "git::https://github.com/FAIYAZHUSSAINH/terraform-gcp-modules.git//vm?ref=v1.0.0"
   vm_name      = var.vm_name
   machine_type = var.machine_type
   zone         = var.zone
