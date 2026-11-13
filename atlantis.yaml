@@ -1,0 +1,37 @@
+
+version: 3
+
+projects:
+  - name: vpc
+    dir: backend/vpc
+    autoplan:
+      enabled: true
+      when_modified:
+        - "**/*.tf"
+        - "*.tfvars"
+        - ".terraform.lock.hcl"
+        - "../../modules/vpc/**/*.tf"
+        - "../../atlantis.yaml"
+
+  - name: storage
+    dir: backend/storage
+    autoplan:
+      enabled: true
+      when_modified:
+        - "**/*.tf"
+        - "*.tfvars"
+        - ".terraform.lock.hcl"
+        - "../../modules/storage/**/*.tf"
+        - "../../atlantis.yaml"
+
+  - name: vm
+    dir: backend/vm
+    autoplan:
+      enabled: true
+      when_modified:
+        - "**/*.tf"
+        - "*.tfvars"
+        - ".terraform.lock.hcl"
+        - "../../modules/vm/**/*.tf"
+        - "../../atlantis.yaml"
+
