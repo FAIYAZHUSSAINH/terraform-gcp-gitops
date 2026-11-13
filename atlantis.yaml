@@ -5,14 +5,27 @@ projects:
   - name: vpc
     dir: backend/vpc
     autoplan:
-      enabled: false
-
-  - name: vm
-    dir: backend/vm
-    autoplan:
-      enabled: false
+      enabled: true
+      when_modified:
+        - "**/*.tf"
+        - "*.tfvars"
+        - "../../modules/vpc/**/*.tf"
 
   - name: storage
     dir: backend/storage
     autoplan:
-      enabled: false
+      enabled: true
+      when_modified:
+        - "**/*.tf"
+        - "*.tfvars"
+        - "../../modules/storage/**/*.tf"
+
+  - name: vm
+    dir: backend/vm
+    autoplan:
+      enabled: true
+      when_modified:
+        - "**/*.tf"
+        - "*.tfvars"
+        - "../../modules/vm/**/*.tf"
+
