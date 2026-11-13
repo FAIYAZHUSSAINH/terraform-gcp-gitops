@@ -1,6 +1,5 @@
 module "storage" {
-  source = "../../modules/storage"
-
+  source = "git::https://github.com/FAIYAZHUSSAINH/terraform-gcp-modules.git//storage?ref=v1.0.0"
   bucket_name = var.bucket_name
   region      = var.region
 }
