@@ -9,7 +9,9 @@ projects:
       when_modified:
         - "**/*.tf"
         - "*.tfvars"
+        - ".terraform.lock.hcl"
         - "../../modules/vpc/**/*.tf"
+        - "../../atlantis.yaml"
 
   - name: storage
     dir: backend/storage
@@ -18,7 +20,9 @@ projects:
       when_modified:
         - "**/*.tf"
         - "*.tfvars"
+        - ".terraform.lock.hcl"
         - "../../modules/storage/**/*.tf"
+        - "../../atlantis.yaml"
 
   - name: vm
     dir: backend/vm
@@ -27,5 +31,7 @@ projects:
       when_modified:
         - "**/*.tf"
         - "*.tfvars"
+        - ".terraform.lock.hcl"
         - "../../modules/vm/**/*.tf"
+        - "../../atlantis.yaml"
 
