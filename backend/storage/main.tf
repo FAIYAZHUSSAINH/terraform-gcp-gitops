@@ -18,3 +18,11 @@ resource "google_storage_bucket" "automation_test" {
     managed = "terraform"
   }
 }
+
+
+module "demo_storage" {
+  source = "git::https://github.com/FAIYAZHUSSAINH/terraform-gcp-modules.git//storage?ref=v1.0.0"
+
+  bucket_name = "fh-atlantis-demo-20261113-1683"
+  region      = "asia-south1"
+}
