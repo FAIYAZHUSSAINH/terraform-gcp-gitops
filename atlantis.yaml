@@ -35,3 +35,13 @@ projects:
         - "../../modules/vm/**/*.tf"
         - "../../atlantis.yaml"
 
+
+  - name: iam
+    dir: backend/iam
+    autoplan:
+      enabled: true
+      when_modified:
+        - "**/*.tf"
+        - "*.tfvars"
+        - ".terraform.lock.hcl"
+        - "../../atlantis.yaml"
