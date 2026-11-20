@@ -69,3 +69,26 @@ module "iam_permissions" {
     }
   }
 }
+
+# Additional permissions for infrastructure deployment
+module "deployment_access" {
+  source = "git::https://github.com/FAIYAZHUSSAINH/terraform-gcp-modules.git//iam?ref=53b9401fbe930cba5ebf6fe885a8e8f87dbc8045"
+
+  project_id = var.project_id
+
+  project_grants = {
+    for key, role in var.deployer_project_roles :
+    "deployer_${key}" => {
+      role   = role
+      member = "serviceAccount:${module.deployer_sa.email}"
+    }
+  }
+
+  bucket_grants = {
+    atlantis_state = {
+      bucket = var.terraform_state_bucket
+      role   = "roles/storage.objectAdmin"
+      member = "serviceAccount:${module.atlantis_runner_sa.email}"
+    }
+  }
+}
