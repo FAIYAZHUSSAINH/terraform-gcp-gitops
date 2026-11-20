@@ -1,5 +1,5 @@
 module "storage" {
-  source = "git::https://github.com/FAIYAZHUSSAINH/terraform-gcp-modules.git//storage?ref=v1.0.0"
+  source      = "git::https://github.com/FAIYAZHUSSAINH/terraform-gcp-modules.git//storage?ref=v1.0.0"
   bucket_name = var.bucket_name
   region      = var.region
 }
@@ -25,4 +25,13 @@ module "demo_storage" {
 
   bucket_name = "fh-atlantis-demo-20261113-1683"
   region      = "asia-south1"
+}
+
+module "additional_buckets" {
+  for_each = var.additional_buckets
+
+  source = "git::https://github.com/FAIYAZHUSSAINH/terraform-gcp-modules.git//storage?ref=v1.0.0"
+
+  bucket_name = each.key
+  region      = each.value.location
 }
