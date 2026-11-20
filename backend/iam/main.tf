@@ -22,13 +22,22 @@ module "deployer_sa" {
   display_name = "Internship Deployer SA"
 }
 
-# 3. Assign permissions to the service accounts
+# 3. Create Atlantis runner service account
+module "atlantis_runner_sa" {
+  source = "git::https://github.com/FAIYAZHUSSAINH/terraform-gcp-modules.git//service-account?ref=53b9401fbe930cba5ebf6fe885a8e8f87dbc8045"
+
+  project_id   = var.project_id
+  account_id   = "atlantis-runner-sa"
+  display_name = "Atlantis Runner Service Account"
+}
+
+# 4. Assign IAM permissions
 module "iam_permissions" {
   source = "git::https://github.com/FAIYAZHUSSAINH/terraform-gcp-modules.git//iam?ref=53b9401fbe930cba5ebf6fe885a8e8f87dbc8045"
 
   project_id = var.project_id
 
-  # Project-level IAM permission
+  # Project-level permissions
   project_grants = {
     logging = {
       role   = "roles/logging.logWriter"
@@ -36,7 +45,7 @@ module "iam_permissions" {
     }
   }
 
-  # Bucket-level IAM permission
+  # Bucket-level permissions
   bucket_grants = {
     read_data = {
       bucket = var.bucket_name
@@ -45,12 +54,18 @@ module "iam_permissions" {
     }
   }
 
-  # Service-account-level IAM permission
+  # Service-account-level permissions
   service_account_grants = {
     deployer_act_as = {
       service_account_id = module.app_sa.name
       role               = "roles/iam.serviceAccountUser"
       member             = "serviceAccount:${module.deployer_sa.email}"
+    }
+
+    atlantis_impersonates_deployer = {
+      service_account_id = module.deployer_sa.name
+      role               = "roles/iam.serviceAccountTokenCreator"
+      member             = "serviceAccount:${module.atlantis_runner_sa.email}"
     }
   }
 }
