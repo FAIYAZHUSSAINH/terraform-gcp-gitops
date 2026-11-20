@@ -1,47 +1,72 @@
-
 version: 3
 
 projects:
   - name: vpc
-    dir: backend/vpc
+    dir: resources/vpc
+    workflow: vpc-dev
     autoplan:
       enabled: true
       when_modified:
         - "**/*.tf"
-        - "*.tfvars"
         - ".terraform.lock.hcl"
-        - "../../modules/vpc/**/*.tf"
-        - "../../atlantis.yaml"
-
-  - name: storage
-    dir: backend/storage
-    autoplan:
-      enabled: true
-      when_modified:
-        - "**/*.tf"
-        - "*.tfvars"
-        - ".terraform.lock.hcl"
-        - "../../modules/storage/**/*.tf"
+        - "../../variables/dev/vpc.tfvars"
+        - "../../backend/dev/vpc.hcl"
         - "../../atlantis.yaml"
 
   - name: vm
-    dir: backend/vm
+    dir: resources/vm
+    workflow: vm-dev
     autoplan:
       enabled: true
       when_modified:
         - "**/*.tf"
-        - "*.tfvars"
         - ".terraform.lock.hcl"
-        - "../../modules/vm/**/*.tf"
+        - "../../variables/dev/vm.tfvars"
+        - "../../backend/dev/vm.hcl"
         - "../../atlantis.yaml"
 
-
-  - name: iam
-    dir: backend/iam
+  - name: storage
+    dir: resources/storage
+    workflow: storage-dev
     autoplan:
       enabled: true
       when_modified:
         - "**/*.tf"
-        - "*.tfvars"
         - ".terraform.lock.hcl"
+        - "../../variables/dev/storage.tfvars"
+        - "../../backend/dev/storage.hcl"
         - "../../atlantis.yaml"
+
+workflows:
+  vpc-dev:
+    plan:
+      steps:
+        - init:
+            extra_args:
+              - "-reconfigure"
+              - "-backend-config=../../backend/dev/vpc.hcl"
+        - plan:
+            extra_args:
+              - "-var-file=../../variables/dev/vpc.tfvars"
+
+  vm-dev:
+    plan:
+      steps:
+        - init:
+            extra_args:
+              - "-reconfigure"
+              - "-backend-config=../../backend/dev/vm.hcl"
+        - plan:
+            extra_args:
+              - "-var-file=../../variables/dev/vm.tfvars"
+
+  storage-dev:
+    plan:
+      steps:
+        - init:
+            extra_args:
+              - "-reconfigure"
+              - "-backend-config=../../backend/dev/storage.hcl"
+        - plan:
+            extra_args:
+              - "-var-file=../../variables/dev/storage.tfvars"
