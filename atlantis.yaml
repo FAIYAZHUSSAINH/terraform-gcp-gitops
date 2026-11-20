@@ -37,18 +37,6 @@ projects:
         - "../../backend/dev/storage.hcl"
         - "../../atlantis.yaml"
 
-  - name: iam
-    dir: resources/iam
-    workflow: iam-dev
-    autoplan:
-      enabled: false
-      when_modified:
-        - "**/*.tf"
-        - ".terraform.lock.hcl"
-        - "../../variables/dev/iam.tfvars"
-        - "../../backend/dev/iam.hcl"
-        - "../../atlantis.yaml"
-
 workflows:
   vpc-dev:
     plan:
@@ -82,14 +70,3 @@ workflows:
         - plan:
             extra_args:
               - "-var-file=../../variables/dev/storage.tfvars"
-
-  iam-dev:
-    plan:
-      steps:
-        - init:
-            extra_args:
-              - "-reconfigure"
-              - "-backend-config=../../backend/dev/iam.hcl"
-        - plan:
-            extra_args:
-              - "-var-file=../../variables/dev/iam.tfvars"
